@@ -10,7 +10,6 @@ exports.main = async (event, context) => {
 	const appid = 'wx677cdf0c74ecfebf' //appid  
 	const secret = '05893277bb68c171aa560ada3f1dc293' //secret  
 	const loginUrl = 'https://api.weixin.qq.com/sns/jscode2session'
-	console.log(13)
 
 	let res = await uniCloud.httpclient.request(loginUrl, {
 		data: {
@@ -28,38 +27,53 @@ exports.main = async (event, context) => {
 	let params = {
 		...userInfo.data[0]
 	}
-	if (params && params._id) {
-		let imagesList = await db.collection('user_images').where({
-			user_id: params._id
-		}).get();
-		let imagesInfo = imagesList.data && imagesList.data.find(el => el.image_url === event.avatarImage)
-		if (imagesInfo && imagesInfo._id) {
-			delete imagesInfo._id
-			imagesInfo.update_date = Date.now()
-			db.collection('user_images').where({
-				user_id: params._id
-			}).update(imagesInfo);
-		} else {
-			db.collection('user_images').add({
-				user_id: params._id,
-				image_url: event.avatarImage,
-				create_date: Date.now(),
-				update_date: Date.now()
-			});
-		}
-	} else {
-		params = {
-			open_id: res.data.openid,
-			nickName: event.nickName,
-			create_date: Date.now()
-		}
-		let addUser = await db.collection('users_mpweixin').add(params);
-		db.collection('user_images').add({
-			user_id: addUser.id,
-			image_url: event.avatarImage,
-			create_date: Date.now(),
-			update_date: Date.now()
-		});
+	switch (event.type) {
+		case 'userLogin':
+			if (!(params && params._id)) {
+				params = {
+					open_id: res.data.openid,
+					nickName: event.nickName,
+					create_date: Date.now()
+				}
+				await db.collection('users_mpweixin').add(params);
+			}
+			break;
+		case 'createImages':
+			if (params && params._id) {
+				let imagesList = await db.collection('user_images').where({
+					user_id: params._id
+				}).get();
+				let imagesInfo = imagesList.data && imagesList.data.find(el => el.image_url === event.avatarImage)
+				if (imagesInfo && imagesInfo._id) {
+					delete imagesInfo._id
+					imagesInfo.update_date = Date.now()
+					db.collection('user_images').where({
+						user_id: params._id
+					}).update(imagesInfo);
+				} else {
+					db.collection('user_images').add({
+						user_id: params._id,
+						image_url: event.avatarImage,
+						create_date: Date.now(),
+						update_date: Date.now()
+					});
+				}
+			} else {
+				params = {
+					open_id: res.data.openid,
+					nickName: event.nickName,
+					create_date: Date.now()
+				}
+				let addUser = await db.collection('users_mpweixin').add(params);
+				db.collection('user_images').add({
+					user_id: addUser.id,
+					image_url: event.avatarImage,
+					create_date: Date.now(),
+					update_date: Date.now()
+				});
+			}
+			break;
 	}
+	
 	return params
 };
