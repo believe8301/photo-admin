@@ -5,6 +5,9 @@ const validator = {
   "category_id": {
     "rules": [
       {
+        "required": true
+      },
+      {
         "format": "string"
       }
     ],
@@ -12,6 +15,9 @@ const validator = {
   },
   "image_url": {
     "rules": [
+      {
+        "required": true
+      },
       {
         "format": "string"
       },
@@ -24,9 +30,6 @@ const validator = {
   "month_sell_count": {
     "rules": [
       {
-        "required": true
-      },
-      {
         "format": "int"
       }
     ],
@@ -35,9 +38,6 @@ const validator = {
   },
   "total_sell_count": {
     "rules": [
-      {
-        "required": true
-      },
       {
         "format": "int"
       }
@@ -86,6 +86,14 @@ const validator = {
     ],
     "defaultValue": false,
     "label": "是否删除"
+  },
+  "sort": {
+    "rules": [
+      {
+        "format": "int"
+      }
+    ],
+    "label": "排序"
   },
   "add_date": {
     "rules": [

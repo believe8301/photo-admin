@@ -86,7 +86,7 @@
 				default: false
 			},
 			value: {
-				type: [Array, String, Number, Boolean],
+				type: [Array, String, Number],
 				default () {
 					return ''
 				}

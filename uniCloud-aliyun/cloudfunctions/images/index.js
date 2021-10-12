@@ -7,6 +7,7 @@ exports.main = async (event, context) => {
 			res = await uniCloud
 				.database()
 				.collection('images')
+				.orderBy("sort", "asc")
 				.where({
 					is_del: false,
 					state: true,

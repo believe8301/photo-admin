@@ -8,6 +8,7 @@ exports.main = async (event, context) => {
 				.database()
 				.collection('categories')
 				.where({is_del: false,state: true})
+				.orderBy("sort", "asc")
 				.get();
 			break;
 	}

@@ -71,6 +71,11 @@
 				"value": false
 			}]
 		},
+		"sort": {
+			"bsonType": "int",
+			"description": "排序，越大越靠后",
+			"title": "排序"
+		},
 		"add_date": {
 			"bsonType": "timestamp",
 			"description": "创建时间",

@@ -16,6 +16,7 @@
 					<button type="primary" class="uni-button" style="width: 100px;" @click="uploadImage()">选择图片</button>
 				</view>
 			</uni-forms-item>
+			<uni-forms-item name="sort" label="排序"><uni-easyinput placeholder="排序，越大越靠后" type="number" v-model="formData.sort"></uni-easyinput></uni-forms-item>
 			<uni-forms-item name="state" label="是否启用:">
 				<uni-data-checkbox v-model="formData.state" :localdata="formOptions.state_localdata"></uni-data-checkbox>
 			</uni-forms-item>
@@ -51,6 +52,7 @@ export default {
 			image_url: '',
 			month_sell_count: 0,
 			total_sell_count: 0,
+			sort: null,
 			state: true,
 			is_del: false,
 			add_date: new Date(),

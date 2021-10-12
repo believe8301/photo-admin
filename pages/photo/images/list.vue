@@ -17,7 +17,7 @@
 			<unicloud-db
 				ref="udb"
 				collection="images,categories"
-				field="category_id{name},image_url,month_sell_count,total_sell_count,state,is_del,add_date,last_modify_date"
+				field="category_id{name},image_url,month_sell_count,total_sell_count,state,is_del,sort,add_date,last_modify_date"
 				:where="where"
 				page-data="replace"
 				:orderby="orderby"
@@ -53,6 +53,7 @@
 						<uni-th align="center" filter-type="select" :filter-data="options.filterData.state_localdata" @filter-change="filterChange($event, 'state')">
 							是否启用
 						</uni-th>
+						<uni-th align="center" sortable @sort-change="sortChange($event, 'sort')">排序</uni-th>
 						<uni-th align="center" sortable @sort-change="sortChange($event, 'add_date')">创建时间</uni-th>
 						<uni-th align="center" sortable @sort-change="sortChange($event, 'last_modify_date')">最后修改时间</uni-th>
 						<uni-th align="center">操作</uni-th>
@@ -65,6 +66,7 @@
 						<uni-td align="center">{{ item.month_sell_count }}</uni-td>
 						<uni-td align="center">{{ item.total_sell_count }}</uni-td>
 						<uni-td align="center">{{ getState(item.state) }}</uni-td>
+						<uni-td align="center">{{ item.sort }}</uni-td>
 						<uni-td align="center"><uni-dateformat :threshold="[0, 0]" :date="item.add_date"></uni-dateformat></uni-td>
 						<uni-td align="center"><uni-dateformat :threshold="[0, 0]" :date="item.last_modify_date"></uni-dateformat></uni-td>
 						<uni-td align="center">
