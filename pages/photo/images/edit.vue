@@ -157,6 +157,7 @@ export default {
 			uniCloud
 				.database()
 				.collection('categories')
+				.orderBy("sort asc")
 				.where('is_del==false&&state==true')
 				.field('name as text,_id as value')
 				.get()

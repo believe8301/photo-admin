@@ -6,6 +6,8 @@
 				<view class="uni-sub-title"></view>
 			</view>
 			<view class="uni-group">
+				<!-- <uni-data-picker :multiple="false" v-model="query" :localdata="categoryList" style="width: 400rpx;"></uni-data-picker>
+				<button class="uni-button" type="default" size="mini" @click="search">搜索</button> -->
 				<button class="uni-button" type="default" size="mini" @click="navigateTo('./add')">新增</button>
 				<!-- <button class="uni-button" type="default" size="mini" :disabled="!selectedIndexs.length" @click="delTable">批量删除</button> -->
 				<download-excel class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData" :type="exportExcel.type" :name="exportExcel.filename">
@@ -90,8 +92,8 @@ import { enumConverter, filterToWhere } from '../../../js_sdk/validator/images.j
 
 const db = uniCloud.database();
 // 表查询配置
-const dbOrderBy = 'last_modify_date'; // 排序字段
-const dbSearchFields = []; // 模糊搜索字段，支持模糊搜索的字段列表
+const dbOrderBy = 'last_modify_date desc'; // 排序字段
+const dbSearchFields = ['category_id']; // 模糊搜索字段，支持模糊搜索的字段列表
 // 分页配置
 const pageSize = 20;
 const pageCurrent = 1;
@@ -145,16 +147,48 @@ export default {
 					'最后修改时间': 'last_modify_date'
 				}
 			},
-			exportExcelData: []
+			exportExcelData: [],
+			categoryList: []
 		};
 	},
 	onLoad() {
 		this._filter = {};
+		this.getCategory()
 	},
 	onReady() {
 		this.$refs.udb.loadData();
 	},
 	methods: {
+		/**
+		 * 获取分类数据
+		 */
+		getCategory() {
+			uni.showLoading({
+				mask: true
+			});
+			uniCloud
+				.database()
+				.collection('categories')
+				.where('is_del==false&&state==true')
+				.field('name as text,_id as value')
+				.orderBy("sort asc")
+				.get()
+				.then(res => {
+					const data = res.result.data;
+					if (data) {
+						this.categoryList = data;
+					}
+				})
+				.catch(err => {
+					uni.showModal({
+						content: err.message || '请求服务失败',
+						showCancel: false
+					});
+				})
+				.finally(() => {
+					uni.hideLoading();
+				});
+		},
 		getState(state) {
 			return this.options.filterData.state_localdata.filter(el => el.value === state)[0].text;
 		},
@@ -170,7 +204,12 @@ export default {
 			return dbSearchFields.map(name => queryRe + '.test(' + name + ')').join(' || ');
 		},
 		search() {
-			const newWhere = this.getWhere();
+			// this.getWhere()
+			const newWhere = `category_id.eq(category_id)`
+			// {
+			// 	is_del: false,
+			// 	category_id: '615d522076f2550001d309a9'
+			// };
 			this.where = newWhere;
 			this.$nextTick(() => {
 				this.loadData();
@@ -228,6 +267,9 @@ export default {
 				.update(value)
 				.then(res => {
 					this.$refs.table.clearSelection();
+					this.$nextTick(() => {
+						this.$refs.udb.loadData();
+					});
 				})
 				.catch(err => {
 					uni.showModal({

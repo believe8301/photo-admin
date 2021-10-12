@@ -6,6 +6,7 @@
 					:multiple="false"
 					v-model="formData.category_id"
 					collection="categories"
+					orderby="sort asc"
 					where="is_del==false&&state==true"
 					field="name as text,_id as value"
 				></uni-data-picker>

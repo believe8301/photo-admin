@@ -6,7 +6,7 @@
 				<view class="uni-sub-title"></view>
 			</view>
 			<view class="uni-group">
-				<input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入搜索内容" />
+				<input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入名称" />
 				<button class="uni-button" type="default" size="mini" @click="search">搜索</button>
 				<button class="uni-button" type="default" size="mini" @click="navigateTo('./add')">新增</button>
 				<download-excel class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData" :type="exportExcel.type" :name="exportExcel.filename">
@@ -79,7 +79,7 @@ import { enumConverter, filterToWhere } from '../../../js_sdk/validator/categori
 
 const db = uniCloud.database();
 // 表查询配置
-const dbOrderBy = 'update_date'; // 排序字段
+const dbOrderBy = 'update_date desc'; // 排序字段
 const dbSearchFields = ['name']; // 模糊搜索字段，支持模糊搜索的字段列表
 // 分页配置
 const pageSize = 20;
@@ -223,6 +223,9 @@ export default {
 				.update(value)
 				.then(res => {
 					this.$refs.table.clearSelection();
+					this.$nextTick(() => {
+						this.$refs.udb.loadData();
+					});
 				})
 				.catch(err => {
 					uni.showModal({
