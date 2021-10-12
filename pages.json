@@ -27,47 +27,52 @@
 			"pages": [{
 				"path": "categories/add",
 				"style": {
-					"navigationBarTitleText": "新增"
+					"navigationBarTitleText": "新增分类"
 				}
 			}, {
 				"path": "categories/edit",
 				"style": {
-					"navigationBarTitleText": "编辑"
+					"navigationBarTitleText": "编辑分类"
 				}
 			}, {
 				"path": "categories/list",
 				"style": {
-					"navigationBarTitleText": "列表"
+					"navigationBarTitleText": "分类列表"
 				}
 			}, {
 				"path": "images/add",
 				"style": {
-					"navigationBarTitleText": "新增"
+					"navigationBarTitleText": "新增图片"
 				}
 			}, {
 				"path": "images/edit",
 				"style": {
-					"navigationBarTitleText": "编辑"
+					"navigationBarTitleText": "编辑图片"
 				}
 			}, {
 				"path": "images/list",
 				"style": {
-					"navigationBarTitleText": "列表"
-				}
-			}, {
-				"path": "users_mpweixin/add",
-				"style": {
-					"navigationBarTitleText": "新增"
-				}
-			}, {
-				"path": "users_mpweixin/edit",
-				"style": {
-					"navigationBarTitleText": "编辑"
+					"navigationBarTitleText": "图片列表"
 				}
 			}, {
 				"path": "users_mpweixin/list",
 				"style": {
-					"navigationBarTitleText": "列表"
+					"navigationBarTitleText": "用户列表"
+				}
+			}, {
+				"path": "code-mag/add",
+				"style": {
+					"navigationBarTitleText": "新增字典"
+				}
+			}, {
+				"path": "code-mag/edit",
+				"style": {
+					"navigationBarTitleText": "编辑字典"
+				}
+			}, {
+				"path": "code-mag/list",
+				"style": {
+					"navigationBarTitleText": "字典列表"
 				}
 			}]
 		},

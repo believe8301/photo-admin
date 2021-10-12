@@ -13,15 +13,15 @@
 		},
 		"open_id": {
 			"description": "唯一标识",
-			"bsonType":"string"
+			"bsonType": "string"
 		},
 		"nickName": {
 			"description": "昵称",
-			"bsonType":"string"
+			"bsonType": "string"
 		},
 		"create_date": {
 			"description": "创建时间",
-			"bsonType":"date"
+			"bsonType": "date"
 		}
 	}
 }
