@@ -1,0 +1,87 @@
+{
+	"bsonType": "object",
+	"required": ["code", "type", "create_date", "update_date"],
+	"permission": {
+		"read": false,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"type": {
+			"title": "类型",
+			"description": "类型",
+			"bsonType": "string"
+		},
+		"code": {
+			"title": "标识",
+			"description": "唯一标识",
+			"bsonType": "string"
+		},
+		"title": {
+			"title": "标题",
+			"description": "标题",
+			"bsonType": "string"
+		},
+		"desc": {
+			"title": "描述",
+			"description": "描述",
+			"bsonType": "string"
+		},
+		"image_url": {
+			"title": "图片",
+			"description": "图片",
+			"bsonType": "string"
+		},
+		"path": {
+			"title": "路由",
+			"description": "路由",
+			"bsonType": "string"
+		},
+		"state": {
+			"bsonType": "bool",
+			"title": "状态",
+			"description": "是否启用",
+			"defaultValue": true,
+			"enum": [{
+				"text": "启用",
+				"value": true
+			}, {
+				"text": "禁用",
+				"value": false
+			}]
+		},
+		"is_del": {
+			"bsonType": "bool",
+			"title": "是否删除",
+			"description": "是否删除",
+			"defaultValue": false,
+			"enum": [{
+				"text": "是",
+				"value": true
+			}, {
+				"text": "否",
+				"value": false
+			}]
+		},
+		"create_date": {
+			"bsonType": "timestamp",
+			"description": "创建时间",
+			"title": "创建时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		},
+		"update_date": {
+			"title": "更新时间",
+			"description": "更新时间",
+			"bsonType": "timestamp",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

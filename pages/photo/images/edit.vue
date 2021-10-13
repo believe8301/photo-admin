@@ -157,9 +157,9 @@ export default {
 			uniCloud
 				.database()
 				.collection('categories')
-				.orderBy("sort asc")
 				.where('is_del==false&&state==true')
-				.field('name as text,_id as value')
+				.field('name as text,_id as value,sort')
+				.orderBy("sort asc")
 				.get()
 				.then(res => {
 					const data = res.result.data;

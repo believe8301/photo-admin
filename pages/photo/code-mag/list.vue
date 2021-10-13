@@ -6,9 +6,10 @@
 				<view class="uni-sub-title"></view>
 			</view>
 			<view class="uni-group">
-				<input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入名称" />
+				<input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入类型/code/标题" />
 				<button class="uni-button" type="default" size="mini" @click="search">搜索</button>
 				<button class="uni-button" type="default" size="mini" @click="navigateTo('./add')">新增</button>
+				<button class="uni-button" type="default" size="mini" :disabled="!selectedIndexs.length" @click="delTable">批量删除</button>
 				<download-excel class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData" :type="exportExcel.type" :name="exportExcel.filename">
 					<button class="uni-button" type="primary" size="mini">导出 Excel</button>
 				</download-excel>
@@ -17,8 +18,8 @@
 		<view class="uni-container">
 			<unicloud-db
 				ref="udb"
-				collection="categories"
-				field="name,sort,state,is_del,create_date,update_date"
+				collection="code-mag"
+				field="type,code,title,desc,image_url,path,state,is_del,create_date,update_date"
 				:where="where"
 				page-data="replace"
 				:orderby="orderby"
@@ -30,19 +31,26 @@
 				loadtime="manual"
 				@load="onqueryload"
 			>
-				<uni-table ref="table" :loading="loading" :emptyText="error.message || '没有更多数据'" border stripe>
-					<!-- type="selection" @selection-change="selectionChange" -->
+				<uni-table ref="table" :loading="loading" :emptyText="error.message || '没有更多数据'" border stripe type="selection" @selection-change="selectionChange">
 					<uni-tr>
-						<uni-th align="center">名称</uni-th>
-						<uni-th align="center" sortable @sort-change="sortChange($event, 'sort')">排序</uni-th>
+						<uni-th align="center">类型</uni-th>
+						<uni-th align="center">标识</uni-th>
+						<uni-th align="center">标题</uni-th>
+						<uni-th align="center">描述</uni-th>
+						<uni-th align="center">图片</uni-th>
+						<uni-th align="center">路由</uni-th>
 						<uni-th align="center" filter-type="select" :filter-data="options.filterData.state_localdata" @filter-change="filterChange($event, 'state')">状态</uni-th>
 						<uni-th align="center" sortable @sort-change="sortChange($event, 'create_date')">创建时间</uni-th>
 						<uni-th align="center" sortable @sort-change="sortChange($event, 'update_date')">更新时间</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
 					<uni-tr v-for="(item, index) in data" :key="index">
-						<uni-td align="center">{{ item.name }}</uni-td>
-						<uni-td align="center">{{ item.sort }}</uni-td>
+						<uni-td align="center">{{ item.type }}</uni-td>
+						<uni-td align="center">{{ item.code }}</uni-td>
+						<uni-td align="center">{{ item.title }}</uni-td>
+						<uni-td align="center">{{ item.desc }}</uni-td>
+						<uni-td align="center"><image :src="item.image_url" mode="widthFix" style="width: 100rpx;"></image></uni-td>
+						<uni-td align="center">{{ item.path }}</uni-td>
 						<uni-td align="center">{{ getState(item.state) }}</uni-td>
 						<uni-td align="center"><uni-dateformat :threshold="[0, 0]" :date="item.create_date"></uni-dateformat></uni-td>
 						<uni-td align="center"><uni-dateformat :threshold="[0, 0]" :date="item.update_date"></uni-dateformat></uni-td>
@@ -65,12 +73,12 @@
 </template>
 
 <script>
-import { enumConverter, filterToWhere } from '../../../js_sdk/validator/categories.js';
+import { enumConverter, filterToWhere } from '../../../js_sdk/validator/code-mag.js';
 
 const db = uniCloud.database();
 // 表查询配置
-const dbOrderBy = 'update_date desc'; // 排序字段
-const dbSearchFields = ['name']; // 模糊搜索字段，支持模糊搜索的字段列表
+const dbOrderBy = ''; // 排序字段
+const dbSearchFields = ['type', 'code', 'title']; // 模糊搜索字段，支持模糊搜索的字段列表。联表查询格式: 主表字段名.副表字段名，例如用户表关联角色表 role.role_name
 // 分页配置
 const pageSize = 20;
 const pageCurrent = 1;
@@ -121,12 +129,15 @@ export default {
 				height: 64
 			},
 			exportExcel: {
-				filename: 'categories.xls',
+				filename: 'code-mag.xls',
 				type: 'xls',
 				fields: {
-					名称: 'name',
-					排序: 'sort',
-					状态: 'state',
+					类型: 'type',
+					标识: 'code',
+					标题: 'title',
+					描述: 'desc',
+					图片: 'image_url',
+					路由: 'path',
 					创建时间: 'create_date',
 					更新时间: 'update_date'
 				}
@@ -153,11 +164,11 @@ export default {
 				return '';
 			}
 			const queryRe = new RegExp(query, 'i');
-			return dbSearchFields.map(name => queryRe + '.test(' + name + ')').join(' || ') + '&&';
+			return dbSearchFields.map(name => queryRe + '.test(' + name + ')').join(' || ');
 		},
 		search() {
 			const newWhere = this.getWhere();
-			this.where = newWhere + filterInfo;
+			this.where = newWhere;
 			this.$nextTick(() => {
 				this.loadData();
 			});
@@ -207,7 +218,7 @@ export default {
 			delete value._id;
 			uniCloud
 				.database()
-				.collection('categories')
+				.collection('code-mag')
 				.doc(data._id)
 				.update(value)
 				.then(res => {
@@ -226,10 +237,10 @@ export default {
 					uni.hideLoading();
 				});
 			// this.$refs.udb.remove(id, {
-			//   success:(res) => {
-			//     this.$refs.table.clearSelection()
-			//   }
-			// })
+			// 	success: res => {
+			// 		this.$refs.table.clearSelection();
+			// 	}
+			// });
 		},
 		sortChange(e, name) {
 			this.orderByFieldName = name;
@@ -252,7 +263,7 @@ export default {
 			if (Object.keys(newWhere).length) {
 				this.where = newWhere;
 			} else {
-				this.where = filterInfo;
+				this.where = '';
 			}
 			this.$nextTick(() => {
 				this.$refs.udb.loadData();

@@ -6,10 +6,8 @@
 				<view class="uni-sub-title"></view>
 			</view>
 			<view class="uni-group">
-				<!-- <uni-data-picker :multiple="false" v-model="query" :localdata="categoryList" style="width: 400rpx;"></uni-data-picker>
-				<button class="uni-button" type="default" size="mini" @click="search">搜索</button> -->
+				<uni-data-picker :multiple="false" v-model="query" :localdata="categoryList" style="width: 400rpx;" @change="search"></uni-data-picker>
 				<button class="uni-button" type="default" size="mini" @click="navigateTo('./add')">新增</button>
-				<!-- <button class="uni-button" type="default" size="mini" :disabled="!selectedIndexs.length" @click="delTable">批量删除</button> -->
 				<download-excel class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData" :type="exportExcel.type" :name="exportExcel.filename">
 					<button class="uni-button" type="primary" size="mini">导出 Excel</button>
 				</download-excel>
@@ -74,7 +72,9 @@
 						<uni-td align="center">
 							<view class="uni-group">
 								<button @click="navigateTo('./edit?id=' + item._id, false)" class="uni-button" size="mini" type="primary">修改</button>
-								<button @click="confirmDelete(item)" class="uni-button" size="mini" type="warn">删除</button>
+								<button v-if="!item.state" @click="confirmDelete(item, {state: true})" class="uni-button" size="mini" type="primary">启用</button>
+								<button v-else @click="confirmDelete(item, {state: false})" class="uni-button" size="mini" type="warn">禁用</button>
+								<button @click="confirmDelete(item, {is_del: true})" class="uni-button" size="mini" type="warn">删除</button>
 							</view>
 						</uni-td>
 					</uni-tr>
@@ -93,7 +93,7 @@ import { enumConverter, filterToWhere } from '../../../js_sdk/validator/images.j
 const db = uniCloud.database();
 // 表查询配置
 const dbOrderBy = 'last_modify_date desc'; // 排序字段
-const dbSearchFields = ['category_id']; // 模糊搜索字段，支持模糊搜索的字段列表
+const dbSearchFields = ['images.category_id']; // 模糊搜索字段，支持模糊搜索的字段列表
 // 分页配置
 const pageSize = 20;
 const pageCurrent = 1;
@@ -204,12 +204,11 @@ export default {
 			return dbSearchFields.map(name => queryRe + '.test(' + name + ')').join(' || ');
 		},
 		search() {
-			// this.getWhere()
-			const newWhere = `category_id.eq(category_id)`
-			// {
-			// 	is_del: false,
-			// 	category_id: '615d522076f2550001d309a9'
-			// };
+			// const newWhere=this.getWhere()
+			const newWhere = {
+				is_del: false,
+				'category_id._id': this.query
+			};
 			this.where = newWhere;
 			this.$nextTick(() => {
 				this.loadData();
@@ -255,8 +254,8 @@ export default {
 		selectionChange(e) {
 			this.selectedIndexs = e.detail.index;
 		},
-		confirmDelete(data) {
-			let value = { ...data, is_del: true };
+		confirmDelete(data, info) {
+			let value = { ...data, ...info,last_modify_date: new Date().getTime() };
 			delete value._id;
 			delete value.category_id;
 			
