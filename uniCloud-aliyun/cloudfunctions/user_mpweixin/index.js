@@ -35,7 +35,8 @@ exports.main = async (event, context) => {
 					nickName: event.nickName,
 					create_date: Date.now()
 				}
-				await db.collection('users_mpweixin').add(params);
+				let addUser= await db.collection('users_mpweixin').add(params);
+				params._id = addUser.id;
 			}
 			break;
 		case 'createImages':
@@ -43,15 +44,16 @@ exports.main = async (event, context) => {
 				let imagesList = await db.collection('user_images').where({
 					user_id: params._id
 				}).get();
-				let imagesInfo = imagesList.data && imagesList.data.find(el => el.image_url === event.avatarImage)
+				let imagesInfo = imagesList.data && imagesList.data.find(el => el.image_url === event
+					.avatarImage)
 				if (imagesInfo && imagesInfo._id) {
 					delete imagesInfo._id
 					imagesInfo.update_date = Date.now()
-					db.collection('user_images').where({
+					await db.collection('user_images').where({
 						user_id: params._id
 					}).update(imagesInfo);
 				} else {
-					db.collection('user_images').add({
+					await db.collection('user_images').add({
 						user_id: params._id,
 						image_url: event.avatarImage,
 						create_date: Date.now(),
@@ -65,7 +67,8 @@ exports.main = async (event, context) => {
 					create_date: Date.now()
 				}
 				let addUser = await db.collection('users_mpweixin').add(params);
-				db.collection('user_images').add({
+				params._id = addUser.id;
+				await db.collection('user_images').add({
 					user_id: addUser.id,
 					image_url: event.avatarImage,
 					create_date: Date.now(),
@@ -74,6 +77,6 @@ exports.main = async (event, context) => {
 			}
 			break;
 	}
-	
+
 	return params
 };
