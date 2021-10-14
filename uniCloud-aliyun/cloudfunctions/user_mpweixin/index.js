@@ -50,7 +50,8 @@ exports.main = async (event, context) => {
 					delete imagesInfo._id
 					imagesInfo.update_date = Date.now()
 					await db.collection('user_images').where({
-						user_id: params._id
+						user_id: params._id,
+						image_url: event.avatarImage
 					}).update(imagesInfo);
 				} else {
 					await db.collection('user_images').add({
