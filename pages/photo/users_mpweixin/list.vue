@@ -8,7 +8,7 @@
 			<view class="uni-group">
 				<input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入昵称/open_id" />
 				<button class="uni-button" type="default" size="mini" @click="search">搜索</button>
-				<button class="uni-button" type="default" size="mini" @click="navigateTo('./add')">新增</button>
+				<!-- <button class="uni-button" type="default" size="mini" @click="navigateTo('./add')">新增</button> -->
 				<button class="uni-button" type="default" size="mini" :disabled="!selectedIndexs.length" @click="delTable">批量删除</button>
 				<download-excel class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData" :type="exportExcel.type" :name="exportExcel.filename">
 					<button class="uni-button" type="primary" size="mini">导出 Excel</button>
