@@ -33,6 +33,51 @@ export default {
 	},
 	sideBar: { // 左侧菜单
 		// 配置静态菜单列表（放置在用户被授权的菜单列表下边）
-		staticMenu: []
+		staticMenu: [
+			{
+				menu_id: "system",
+				text: '系统管理',
+				icon: 'uni-icons-gear',
+				url: "",
+				children: [{
+					menu_id: "user",
+					text: '用户管理',
+					icon: '',
+					value: '/pages/system/user/list',
+				},{
+					menu_id: "role",
+					text: '角色管理',
+					icon: '',
+					value: '/pages/system/role/list',
+				},{
+					menu_id: "app",
+					text: '权限管理',
+					icon: '',
+					value: '/pages/system/app/list',
+				},{
+					menu_id: "menu",
+					text: '菜单管理',
+					icon: '',
+					value: '/pages/system/menu/list',
+				}]
+			},
+			{
+				menu_id: "demo",
+				text: '静态功能演示',
+				icon: 'uni-icons-list',
+				url: "",
+				children: [{
+					menu_id: "icons",
+					text: '图标',
+					icon: '',
+					value: '/pages/demo/icons/icons',
+				}, {
+					menu_id: "table",
+					text: '表格',
+					icon: '',
+					value: '/pages/demo/table/table',
+				}]
+			}
+		]
 	}
 }
