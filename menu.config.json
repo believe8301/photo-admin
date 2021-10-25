@@ -1,0 +1,5 @@
+{"_id":{"$oid":"615d42e11259260001a225bb"},"permission":[],"enable":true,"menu_id":"photo","name":"头像管理","icon":"uni-icons-contact","url":"","sort":1,"parent_id":"","create_date":1633501921083}
+{"_id":{"$oid":"615d4307817bc50001298994"},"parent_id":"photo","permission":[],"enable":true,"menu_id":"categories","name":"分类","icon":"","url":"/pages/photo/categories/list","sort":null,"create_date":1633501959532}
+{"_id":{"$oid":"615d4320012f1b0001af67fe"},"parent_id":"photo","permission":[],"enable":true,"menu_id":"images","name":"图片","icon":"","url":"/pages/photo/images/list","sort":null,"create_date":1633501983840}
+{"_id":{"$oid":"615da7bb76f2550001d53692"},"parent_id":"photo","permission":[],"enable":true,"menu_id":"user","name":"用户头像","icon":"","url":"/pages/photo/users_mpweixin/list","sort":null,"create_date":1633527739371}
+{"_id":{"$oid":"6165304276f2550001255760"},"parent_id":"photo","permission":[],"enable":true,"menu_id":"code-mag","name":"分享配置","icon":"","url":"pages/photo/code-mag/list","sort":null,"create_date":1634021443396}
