@@ -17,7 +17,7 @@
 			<unicloud-db
 				ref="udb"
 				collection="images,categories"
-				field="category_id{name},image_url,month_sell_count,total_sell_count,state,is_del,sort,add_date,last_modify_date"
+				field="category_id{name},image_url,month_sell_count,total_sell_count,drag_state,state,is_del,sort,add_date,last_modify_date"
 				:where="where"
 				page-data="replace"
 				:orderby="orderby"
@@ -50,6 +50,9 @@
 						>
 							总下载次数
 						</uni-th>
+						<uni-th align="center" filter-type="select" :filter-data="options.filterData.dragState_localdata" @filter-change="filterChange($event, 'drag_state')">
+							是否可以拖拽
+						</uni-th>
 						<uni-th align="center" filter-type="select" :filter-data="options.filterData.state_localdata" @filter-change="filterChange($event, 'state')">
 							是否启用
 						</uni-th>
@@ -65,7 +68,8 @@
 						</uni-td>
 						<uni-td align="center">{{ item.month_sell_count }}</uni-td>
 						<uni-td align="center">{{ item.total_sell_count }}</uni-td>
-						<uni-td align="center">{{ getState(item.state) }}</uni-td>
+						<uni-td align="center">{{ getState(item.drag_state, 'dragState_localdata') }}</uni-td>
+						<uni-td align="center">{{ getState(item.state, 'state_localdata') }}</uni-td>
 						<uni-td align="center">{{ item.sort }}</uni-td>
 						<uni-td align="center"><uni-dateformat :threshold="[0, 0]" :date="item.add_date"></uni-dateformat></uni-td>
 						<uni-td align="center"><uni-dateformat :threshold="[0, 0]" :date="item.last_modify_date"></uni-dateformat></uni-td>
@@ -123,6 +127,16 @@ export default {
 						},
 						{
 							text: '禁用',
+							value: false
+						}
+					],
+					dragState_localdata: [
+						{
+							text: '是',
+							value: true
+						},
+						{
+							text: '否',
 							value: false
 						}
 					]
@@ -189,8 +203,9 @@ export default {
 					uni.hideLoading();
 				});
 		},
-		getState(state) {
-			return this.options.filterData.state_localdata.filter(el => el.value === state)[0].text;
+		getState(state, info) {
+			let item = this.options.filterData[info].find(el => el.value === state)
+			return (item && item.text) || '否';
 		},
 		onqueryload(data) {
 			this.exportExcelData = data;

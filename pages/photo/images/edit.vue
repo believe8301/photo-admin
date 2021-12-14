@@ -13,6 +13,9 @@
 			<uni-forms-item name="sort" label="排序">
 				<uni-easyinput placeholder="排序，越大越靠后" type="number" v-model="formData.sort"></uni-easyinput>
 			</uni-forms-item>
+			<uni-forms-item name="drag_state" label="是否可以拖拽:">
+				<uni-data-checkbox v-model="formData.drag_state" :localdata="formOptions.dragState_localdata"></uni-data-checkbox>
+			</uni-forms-item>
 			<uni-forms-item name="state" label="是否启用">
 				<uni-data-checkbox :multiple="false" v-model="formData.state" :localdata="formOptions.state_localdata"></uni-data-checkbox>
 			</uni-forms-item>
@@ -46,6 +49,7 @@ export default {
 		let formData = {
 			category_id: '',
 			image_url: '',
+			drag_state: true,
 			state: true,
 			is_del: false,
 			sort: null,
@@ -62,6 +66,16 @@ export default {
 					},
 					{
 						text: '禁用',
+						value: false
+					}
+				],
+				dragState_localdata: [
+					{
+						text: '是',
+						value: true
+					},
+					{
+						text: '否',
 						value: false
 					}
 				]
@@ -188,7 +202,7 @@ export default {
 			});
 			db.collection(dbCollectionName)
 				.doc(id)
-				.field('category_id,sort,image_url,month_sell_count,total_sell_count,state,is_del,add_date,last_modify_date')
+				.field('category_id,sort,image_url,month_sell_count,total_sell_count,drag_state,state,is_del,add_date,last_modify_date')
 				.get()
 				.then(res => {
 					const data = res.result.data[0];

@@ -58,6 +58,19 @@
 				"value": false
 			}]
 		},
+		"drag_state": {
+			"bsonType": "bool",
+			"description": "是否可以拖拽",
+			"title": "是否可以拖拽",
+			"defaultValue": false,
+			"enum": [{
+				"text": "是",
+				"value": true
+			}, {
+				"text": "否",
+				"value": false
+			}]
+		},
 		"is_del": {
 			"bsonType": "bool",
 			"description": "是否删除",
