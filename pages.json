@@ -21,8 +21,43 @@
 			}
 
 		}
+
 	],
 	"subPackages": [{
+			"root": "pages/sign",
+			"pages": [{
+				"path": "sign-category/add",
+				"style": {
+					"navigationBarTitleText": "新增"
+				}
+			}, {
+				"path": "sign-category/edit",
+				"style": {
+					"navigationBarTitleText": "编辑"
+				}
+			}, {
+				"path": "sign-category/list",
+				"style": {
+					"navigationBarTitleText": "列表"
+				}
+			}, {
+				"path": "sign-content/add",
+				"style": {
+					"navigationBarTitleText": "新增"
+				}
+			}, {
+				"path": "sign-content/edit",
+				"style": {
+					"navigationBarTitleText": "编辑"
+				}
+			}, {
+				"path": "sign-content/list",
+				"style": {
+					"navigationBarTitleText": "列表"
+				}
+			}]
+		},
+		{
 			"root": "pages/photo",
 			"pages": [{
 				"path": "categories/add",

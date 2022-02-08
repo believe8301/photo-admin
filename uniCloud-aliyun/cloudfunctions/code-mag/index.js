@@ -7,11 +7,21 @@ exports.main = async (event, context) => {
 			res = await uniCloud
 				.database()
 				.collection('code-mag')
-				.where({is_del: false,state: true})
-				.get();
+				// ,state: true
+				.where({
+					is_del: false
+				})
+				.get()
+			if (res && res.data) {
+				res.data.forEach(el => {
+					el.imageUrl = el.image_url
+					delete el.image_url
+					return el
+				});
+			}
 			break;
 	}
-	
+
 	//返回数据给客户端
 	return res
 };
