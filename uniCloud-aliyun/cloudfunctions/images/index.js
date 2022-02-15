@@ -16,14 +16,16 @@ exports.main = async (event, context) => {
 				.get()
 			break;
 		case 'imageUsed':
-			let params = {
-				...event.imageInfo
-			};
-			delete params._id
-			params.total_sell_count += 1
-			res = await uniCloud
-				.database()
-				.collection('images').doc(event.imageInfo._id).update(params)
+			if (event.imageInfo && event.imageInfo._id) {
+				let params = {
+					...event.imageInfo
+				};
+				delete params._id
+				params.total_sell_count += 1
+				res = await uniCloud
+					.database()
+					.collection('images').doc(event.imageInfo._id).update(params)
+			}
 
 			break;
 	}

@@ -1,3 +1,12 @@
+## 2.2.2（2021-12-10）
+- 修复 clear-icon 属性在小程序平台不生效的 bug
+## 2.2.1（2021-12-10）
+- 修复 日期范围选在小程序平台，必须多点击一次才能取消选中状态的 bug
+## 2.2.0（2021-11-19）
+- 优化 组件UI，并提供设计资源，详见:[https://uniapp.dcloud.io/component/uniui/resource](https://uniapp.dcloud.io/component/uniui/resource)
+- 文档迁移，详见:[https://uniapp.dcloud.io/component/uniui/uni-datetime-picker](https://uniapp.dcloud.io/component/uniui/uni-datetime-picker)
+## 2.1.5（2021-11-09） 
+- 新增 提供组件设计资源，组件样式调整
 ## 2.1.4（2021-09-10）
 - 修复 hide-second 在移动端的 bug
 - 修复 单选赋默认值时，赋值日期未高亮的 bug
