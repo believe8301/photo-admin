@@ -80,7 +80,7 @@
 				default: false
 			},
 			value: {
-				type: [Array, String, Number, Boolean],
+				type: [Array, String, Number],
 				default () {
 					return ''
 				}
@@ -375,7 +375,7 @@
 						selectedArr.push(item[this.map.value])
 					}
 				})
-				return this.dataValue.length > 0 ? this.dataValue : selectedArr
+				return this.dataValue && this.dataValue.length > 0 ? this.dataValue : selectedArr
 			},
 
 			/**

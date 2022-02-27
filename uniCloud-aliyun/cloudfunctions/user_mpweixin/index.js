@@ -40,6 +40,7 @@ exports.main = async (event, context) => {
 			}
 			break;
 		case 'createImages':
+		case 'selectedImage':
 			if (params && params._id) {
 				let imagesList = await db.collection('user_images').where({
 					user_id: params._id
@@ -77,6 +78,7 @@ exports.main = async (event, context) => {
 				});
 			}
 			break;
+		
 	}
 
 	return params

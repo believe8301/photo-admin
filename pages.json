@@ -55,6 +55,11 @@
 				"style": {
 					"navigationBarTitleText": "列表"
 				}
+			}, {
+				"path": "user_sign/list",
+				"style": {
+					"navigationBarTitleText": "列表"
+				}
 			}]
 		},
 		{

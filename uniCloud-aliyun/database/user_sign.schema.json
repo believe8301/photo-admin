@@ -1,0 +1,59 @@
+{
+	"bsonType": "object",
+	"required": ["user_id", "category_id","content_id","create_date","update_date"],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": true
+	},
+	"properties": {
+		"_id": {
+			"description": "存储文档 ID（图片 ID），系统自动生成"
+		},
+		"user_id": {
+			"bsonType": "string",
+			"title": "用户id",
+			"enum": {
+				"collection": "users_mpweixin",
+				"field": "nickName as text,_id as value"
+			},
+			"foreignKey": "users_mpweixin._id"
+		},
+		"category_id": {
+			"bsonType": "string",
+			"description": "分类id",
+			"title": "分类id",
+			"enum": {
+				"collection": "sign-category",
+				"field": "name as text,_id as value"
+			},
+			"foreignKey": "sign-category._id"
+		},
+		"content_id": {
+			"bsonType": "string",
+			"title": "内容id",
+			"enum": {
+				"collection": "sign-content",
+				"field": "content as text,_id as value"
+			},
+			"foreignKey": "sign-content._id"
+		},
+		"create_date": {
+			"bsonType": "timestamp",
+			"description": "创建时间",
+			"title": "创建时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		},
+		"update_date": {
+			"bsonType": "timestamp",
+			"description": "修改时间",
+			"title": "修改时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+	}
+}

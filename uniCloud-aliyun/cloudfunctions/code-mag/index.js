@@ -7,9 +7,9 @@ exports.main = async (event, context) => {
 			res = await uniCloud
 				.database()
 				.collection('code-mag')
-				// ,state: true
 				.where({
-					is_del: false
+					is_del: false,
+					state: true
 				})
 				.get()
 			if (res && res.data) {
