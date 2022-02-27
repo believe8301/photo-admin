@@ -10,8 +10,7 @@ exports.main = async (event, context) => {
 				.where({
 					is_del: false,
 					state: true
-				})
-				.get()
+				}).orderBy("update_date", "asc").get()
 			if (res && res.data) {
 				res.data.forEach(el => {
 					el.imageUrl = el.image_url
