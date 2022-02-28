@@ -103,7 +103,7 @@ exports.main = async (event, context) => {
 						content: selectSign.content,
 					}
 				}
-			} else if(events.setType !== 'onlyGet') {
+			} else if(event.setType !== 'onlyGet') {
 				let selectCategory = await getRandomCategory('random')
 				let selectSign = await getRandomContent('random', selectCategory._id)
 				res = {
